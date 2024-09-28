@@ -3,6 +3,7 @@ package com._squared.mathplayopen.iam.domain.model.aggregates;
 import com._squared.mathplayopen.iam.domain.model.entities.Role;
 import com._squared.mathplayopen.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -26,15 +27,12 @@ public class User extends AuditableAbstractAggregateRoot<User> {
     @NotBlank
     @Size(max = 50)
     @Column(unique = true)
-    private String username;
+    @Email
+    private String email;
 
     @NotBlank
     @Size(max = 120)
     private String password;
-
-    @NotBlank
-    @Size(max = 50)
-    private String phoneNumber;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) // Eager fetch to load the roles when loading the user
     @JoinTable(	name = "user_roles",
@@ -45,15 +43,15 @@ public class User extends AuditableAbstractAggregateRoot<User> {
     public User() {
         this.roles = new HashSet<>();
     }
-    public User(String username, String password, String phoneNumber) {
-        this.username = username;
+    public User(String email, String password) {
+        this.email = email;
         this.password = password;
-        this.phoneNumber = phoneNumber;
+
         this.roles = new HashSet<>();
     }
 
-    public User(String username, String password, String phoneNumber ,List<Role> roles) {
-        this(username, password, phoneNumber    );
+    public User(String email, String password,List<Role> roles) {
+        this(email, password );
         addRoles(roles);
     }
 
