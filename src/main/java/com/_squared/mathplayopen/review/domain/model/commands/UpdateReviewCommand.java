@@ -1,0 +1,4 @@
+package com._squared.mathplayopen.review.domain.model.commands;
+
+public record UpdateReviewCommand(Long id, String description, Integer score) {
+}
