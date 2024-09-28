@@ -47,7 +47,7 @@ public class Role {
      * @return the default role
      */
     public static Role getDefaultRole() {
-        return new Role(Roles.ROLE_MEMBER);
+        return new Role(Roles.ROLE_STUDENT);
     }
 
     /**
@@ -56,9 +56,12 @@ public class Role {
      * @return the role
      */
     public static Role toRoleFromName(String name) {
-        return new Role(Roles.valueOf(name));
+        try {
+            return new Role(Roles.valueOf(name));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid role name: " + name);
+        }
     }
-
     /**
      * Validate the role set
      * <p>

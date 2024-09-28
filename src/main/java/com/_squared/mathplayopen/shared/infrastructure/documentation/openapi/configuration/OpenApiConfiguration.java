@@ -24,14 +24,14 @@ public class OpenApiConfiguration {
         var openApi = new OpenAPI();
         openApi
                 .info(new Info()
-                        .title("FithubPro API - UPC")
-                        .description("FithubPro application REST API documentation.")
+                        .title("MathPlayOpen API - UPC")
+                        .description("MathPlayOpen application REST API documentation.")
                         .version("v1.0.0")
                         .license(new License().name("Apache 2.0")
                                 .url("https://springdoc.org")))
                 .externalDocs(new ExternalDocumentation()
-                        .description("FithubPro Landing Page")
-                        .url("https://final-project-opensource.github.io/LandingPageFitHub/"));
+                        .description("MathPlayOpen Landing Page")
+                        .url(""));
 
         final String securitySchemeName = "bearerAuth";
         openApi.addSecurityItem(new SecurityRequirement()

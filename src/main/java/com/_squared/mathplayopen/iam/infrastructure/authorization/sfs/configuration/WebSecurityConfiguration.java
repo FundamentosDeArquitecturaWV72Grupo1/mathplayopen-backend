@@ -129,3 +129,4 @@ public class WebSecurityConfiguration {
         this.unauthorizedRequestHandler = authenticationEntryPoint;
     }
 }
+

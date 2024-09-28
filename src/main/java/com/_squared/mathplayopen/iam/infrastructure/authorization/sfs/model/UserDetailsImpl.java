@@ -1,7 +1,7 @@
 package com._squared.mathplayopen.iam.infrastructure.authorization.sfs.model;
 
-import com._squared.mathplayopen.iam.domain.model.aggregates.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com._squared.mathplayopen.iam.domain.model.aggregates.User;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

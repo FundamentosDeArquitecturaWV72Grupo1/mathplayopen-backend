@@ -1,4 +1,4 @@
 package com._squared.mathplayopen.iam.domain.model.queries;
 
-public record GetUserByUsernameQuery(String email) {
+public record GetUserByUsernameQuery(String username) {
 }
