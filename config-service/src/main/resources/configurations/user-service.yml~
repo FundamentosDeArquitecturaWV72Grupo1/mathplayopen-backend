@@ -1,0 +1,33 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: user-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/userdb
+    username: root
+    password: dB.B0e0y!Jex>JTR1u6GyFXg3
+  jpa:
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: com.user.service.shared.infrastructure.persistence.jpa.configuration.strategy.SnakeCaseWithPluralizedTablePhysicalNamingStrategy
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    open-in-view: true
+
+authorization:
+  jwt:
+    secret: 8Zz7vy2Kqmj5ZRYYhP2QPlm5z1HOhrqiZyqxT1hr8tAFKpITN0GRKLD8kJvd2hd
+    expiration:
+      days: 7
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

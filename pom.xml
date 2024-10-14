@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.3.4</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>com.twosquared</groupId>
+  <artifactId>mathplayopenMicroservices</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>mathplayopenMicroservices</name>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>gateway-service</module>
+    <module>eureka-service</module>
+    <module>config-service</module>
+    <module>user-service</module>
+    <module>review-service</module>
+  </modules>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>22</maven.compiler.source>
+    <maven.compiler.target>22</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.34</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.springFramework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>3.3.4</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+</project>
