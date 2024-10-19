@@ -1,0 +1,14 @@
+package com.user.service.mathplayopen.domain.model.valueobjects;
+
+@Embeddable
+public record EmailAddress(String email) {
+    public Email {
+        if (!isValidEmail(value)) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+    }
+
+    private static boolean isValidEmail(String email) {
+        return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+    }
+}

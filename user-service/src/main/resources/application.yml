@@ -4,6 +4,9 @@ spring:
   config:
     import: optional:configserver:http://localhost:8888
 
+gateway:
+  url: http://localhost:8080
+
 authorization:
   jwt:
     secret: 8Zz7vy2Kqmj5ZRYYhP2QPlm5z1HOhrqiZyqxT1hr8tAFKpITN0GRKLD8kJvd2hd

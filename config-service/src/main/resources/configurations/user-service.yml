@@ -11,9 +11,7 @@ spring:
     password: dB.B0e0y!Jex>JTR1u6GyFXg3
   jpa:
     hibernate:
-      ddl-auto: create
-      naming:
-        physical-strategy: com.user.service.shared.infrastructure.persistence.jpa.configuration.strategy.SnakeCaseWithPluralizedTablePhysicalNamingStrategy
+      ddl-auto: update
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true

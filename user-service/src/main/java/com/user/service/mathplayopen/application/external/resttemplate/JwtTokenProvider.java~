@@ -1,0 +1,4 @@
+package com.user.service.mathplayopen.application.external.resttemplate;
+
+public class JwtTokenProvider {
+}

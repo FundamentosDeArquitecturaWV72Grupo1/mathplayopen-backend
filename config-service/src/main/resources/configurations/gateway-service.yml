@@ -13,21 +13,36 @@ spring:
       discovery:
         locator:
           enabled: true
-      mvc:
-        routes:
-          - id: user-service
-            uri: http://localhost:8090
-            predicates:
-              - Path=/api/v1/users/**
-          - id: user-service-roles
-            uri: http://localhost:8090
-            predicates:
-              - Path=/api/v1/roles/**
-          - id: user-service-authentication
-            uri: http://localhost:8090
-            predicates:
-              - Path=/api/v1/authentication/**
-          - id: review-service
-            uri: http://localhost:9090
-            predicates:
-              - Path=/api/v1/reviews/**
+      routes:
+        - id: user-service-students
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/v1/students/**
+          filters:
+            - AuthFilter
+        - id: user-service-instructors
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/v1/instructors/**
+          filters:
+            - AuthFilter
+        - id: user-service-institutions
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/v1/institutions/**
+        - id: review-service
+          uri: http://localhost:9090
+          predicates:
+            - Path=/api/v1/reviews/**
+        - id: auth-service-authentication
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/authentication/**
+        - id: auth-service-roles
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/roles/**
+        - id: auth-service-users
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/users/**

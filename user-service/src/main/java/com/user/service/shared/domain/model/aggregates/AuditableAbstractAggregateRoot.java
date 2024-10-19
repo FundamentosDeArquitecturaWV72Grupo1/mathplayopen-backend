@@ -29,4 +29,7 @@ public class AuditableAbstractAggregateRoot<T extends AbstractAggregateRoot<T>> 
     @Column(nullable = false)
     private Date updatedAt;
 
+    public void publishEvent(Object event) {
+        registerEvent(event);
+    }
 }

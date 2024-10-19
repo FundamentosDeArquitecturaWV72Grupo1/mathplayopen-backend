@@ -12,18 +12,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-      naming:
-        physical-strategy: com.user.service.shared.infrastructure.persistence.jpa.configuration.strategy.SnakeCaseWithPluralizedTablePhysicalNamingStrategy
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
     open-in-view: true
-
-authorization:
-  jwt:
-    secret: 8Zz7vy2Kqmj5ZRYYhP2QPlm5z1HOhrqiZyqxT1hr8tAFKpITN0GRKLD8kJvd2hd
-    expiration:
-      days: 7
 
 eureka:
   instance:

@@ -1,0 +1,7 @@
+package com.user.service.mathplayopen.application.external.resttemplate;
+
+import org.springframework.security.core.userdetails.UserDetails;
+
+public class CustomerUserDetails implements UserDetails {
+    
+}

@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: auth-service
+  config:
+    import: optional:configserver:http://localhost:8888
+
+authorization:
+  jwt:
+    secret: 8Zz7vy2Kqmj5ZRYYhP2QPlm5z1HOhrqiZyqxT1hr8tAFKpITN0GRKLD8kJvd2hd
+    expiration:
+      days: 7
