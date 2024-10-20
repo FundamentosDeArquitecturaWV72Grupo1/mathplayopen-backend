@@ -1,0 +1,5 @@
+package com.games.service.mathplayopen.application.external.feignclients.model;
+
+public record ReviewDto (
+
+) { }

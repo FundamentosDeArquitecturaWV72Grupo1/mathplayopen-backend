@@ -24,6 +24,7 @@
     <module>review-service</module>
     <module>auth-service</module>
     <module>news-service</module>
+    <module>games-service</module>
   </modules>
 
   <properties>
