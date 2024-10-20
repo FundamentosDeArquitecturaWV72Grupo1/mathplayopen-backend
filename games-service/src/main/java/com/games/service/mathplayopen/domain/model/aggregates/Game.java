@@ -46,6 +46,16 @@ public class Game extends AuditableAbstractAggregateRoot<Game> {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GameScore> gameScores = new ArrayList<>();
 
+    public Game(Title title, Description description, EmbedCode embedCode, String imageUrl, String rules, Difficulty difficulty, String topic) {
+        this.title = title;
+        this.description = description;
+        this.embedCode = embedCode;
+        this.imageUrl = imageUrl;
+        this.rules = rules;
+        this.difficulty = difficulty;
+        this.topic = topic;
+    }
+
     public void addFavorite(Long studentId) {
         FavoriteGame favoriteGame = new FavoriteGame(this, studentId);
         favoriteGames.add(favoriteGame);

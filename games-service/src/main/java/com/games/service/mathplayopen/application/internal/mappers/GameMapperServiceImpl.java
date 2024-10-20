@@ -30,9 +30,9 @@ public class GameMapperServiceImpl implements GameMapperService {
     public GameDto toDto(Game game) {
         return new GameDto(
                 game.getId(),
-                game.getTitle().value(),
-                game.getDescription().value(),
-                game.getEmbedCode().value(),
+                game.getTitle().title(),
+                game.getDescription().description(),
+                game.getEmbedCode().code(),
                 game.getImageUrl(),
                 game.getRules(),
                 game.getDifficulty(),
