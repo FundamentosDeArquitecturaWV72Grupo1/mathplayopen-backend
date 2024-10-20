@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Entity
+@Entity(name = "review")
 @NoArgsConstructor
 public class Review extends AuditableAbstractAggregateRoot<Review>{
 

@@ -1,4 +1,4 @@
-package com.review.service.shared.domain.model.aggregates;
+package com.news.service.shared.domain.model.aggregates;
 
 import jakarta.persistence.*;
 import lombok.Getter;

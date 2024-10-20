@@ -28,7 +28,7 @@ public class ReviewController {
         this.reviewQueryService = reviewQueryService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ReviewResource>> getAllReviews(){
         var getAllReviews = new GetAllReviewsQuery();
         var reviews = reviewQueryService.handle(getAllReviews);
@@ -36,7 +36,7 @@ public class ReviewController {
         return ResponseEntity.ok(reviewResources);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ReviewResource> createReview(@RequestBody CreateReviewResource createReviewResource){
         var createReviewCommand = CreateReviewCommandFromResourceAssembler.toCommandFromResource(createReviewResource);
         var review = reviewCommandService.handle(createReviewCommand);
@@ -45,7 +45,7 @@ public class ReviewController {
     }
 
 
-    @PutMapping("/{reviewId}")
+    @PutMapping("/update/{reviewId}")
     public ResponseEntity<ReviewResource> updateReview(@PathVariable Long reviewId, @RequestBody UpdateReviewResource updateReviewResource){
         var updateReviewCommand = UpdateReviewCommandFromResourceAssembler.toCommandFromResource(reviewId, updateReviewResource);
         var review = reviewCommandService.handle(updateReviewCommand);
@@ -53,7 +53,7 @@ public class ReviewController {
         return ResponseEntity.ok(reviewResource);
     }
 
-    @DeleteMapping("/{reviewId}")
+    @DeleteMapping("/delete/{reviewId}")
     public ResponseEntity<?> deleteReview(@PathVariable Long reviewId){
         var deleteReviewCommand = new DeleteReviewCommand(reviewId);
         reviewCommandService.handle(deleteReviewCommand);

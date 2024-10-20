@@ -25,7 +25,7 @@ public class OpenApiConfiguration {
         var openApi = new OpenAPI();
         openApi
                 .info(new Info()
-                        .title("MathPlayOpen API - UPC")
+                        .title("MathPlayOpen API - UPC: AUTH SERVICE")
                         .description("MathPlayOpen application REST API documentation.")
                         .version("v1.0.0")
                         .license(new License().name("Apache 2.0")

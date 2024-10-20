@@ -23,7 +23,6 @@
     <module>user-service</module>
     <module>review-service</module>
     <module>auth-service</module>
-    <module>news-service</module>
   </modules>
 
   <properties>

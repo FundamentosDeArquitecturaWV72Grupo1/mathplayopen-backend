@@ -1,4 +1,4 @@
-package com.review.service.shared.infrastructure.documentation.openapi.configuration;
+package com.news.service.shared.infrastructure.documentation.openapi.configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -24,7 +24,7 @@ public class OpenApiConfiguration {
         var openApi = new OpenAPI();
         openApi
                 .info(new Info()
-                        .title("MathPlayOpen API - UPC: REVIEW SERVICE")
+                        .title("MathPlayOpen API - UPC: NEWS SERVICE")
                         .description("MathPlayOpen application REST API documentation.")
                         .version("v1.0.0")
                         .license(new License().name("Apache 2.0")
