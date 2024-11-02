@@ -2,8 +2,6 @@ package com.games.service.mathplayopen.domain.model.aggregates;
 
 import com.games.service.mathplayopen.domain.model.entities.FavoriteGame;
 import com.games.service.mathplayopen.domain.model.entities.GameScore;
-import com.games.service.mathplayopen.domain.model.events.GameUpdateEvent;
-import com.games.service.mathplayopen.domain.model.valueobjects.Difficulty;
 import com.games.service.mathplayopen.domain.model.valueobjects.EmbedCode;
 import com.games.service.mathplayopen.domain.model.valueobjects.Description;
 import com.games.service.mathplayopen.domain.model.valueobjects.Title;
@@ -34,10 +32,6 @@ public class Game extends AuditableAbstractAggregateRoot<Game> {
 
     private String imageUrl;
     private String rules;
-
-    @Enumerated(EnumType.STRING)
-    private Difficulty difficulty;
-
     private String topic;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -46,13 +40,12 @@ public class Game extends AuditableAbstractAggregateRoot<Game> {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GameScore> gameScores = new ArrayList<>();
 
-    public Game(Title title, Description description, EmbedCode embedCode, String imageUrl, String rules, Difficulty difficulty, String topic) {
+    public Game(Title title, Description description, EmbedCode embedCode, String imageUrl, String rules, String topic) {
         this.title = title;
         this.description = description;
         this.embedCode = embedCode;
         this.imageUrl = imageUrl;
         this.rules = rules;
-        this.difficulty = difficulty;
         this.topic = topic;
     }
 
@@ -68,16 +61,5 @@ public class Game extends AuditableAbstractAggregateRoot<Game> {
     public void addScore(Long studentId, Integer score, Long playTimeInSeconds) {
         GameScore gameScore = new GameScore(this, studentId, score, playTimeInSeconds);
         gameScores.add(gameScore);
-    }
-
-    public void updateDetails(Title title, Description description, EmbedCode embedCode, String imageUrl, String rules, Difficulty difficulty, String topic) {
-        this.title = title;
-        this.description = description;
-        this.embedCode = embedCode;
-        this.imageUrl = imageUrl;
-        this.rules = rules;
-        this.difficulty = difficulty;
-        this.topic = topic;
-        registerEvent(new GameUpdateEvent(this.getId(), this.title, this.description));
     }
 }

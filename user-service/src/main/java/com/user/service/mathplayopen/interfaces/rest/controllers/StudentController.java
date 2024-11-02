@@ -143,4 +143,18 @@ public class StudentController {
         }
         return token;
     }
+
+    @GetMapping("/current")
+    public ResponseEntity<UserDto> getCurrentUser (HttpServletRequest request) {
+        String token = tokenExtractor.extractTokenFromRequest(request);
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        UserDto userDto = studentQueryService.getUserByToken(token);
+        if (userDto == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(userDto);
+    }
 }

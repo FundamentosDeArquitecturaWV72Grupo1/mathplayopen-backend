@@ -51,7 +51,9 @@ public class StudentQueryServiceImpl implements StudentQueryService {
     public UserDto getUserByToken(String token) {
         UserDto user = authenticationClient.getCurrentUser(token);
         if (user.getId() != null) {
-            return user;
+            return studentRepository.findById(user.getId())
+                    .map(this::convertToUserDto)
+                    .orElse(null);
         }
         return null;
     }

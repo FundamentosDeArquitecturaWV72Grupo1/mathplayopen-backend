@@ -1,13 +1,18 @@
 package com.games.service.mathplayopen.application.internal.commandservices;
 
-import com.games.service.mathplayopen.application.external.systemfacade.GameSystemFacade;
-import com.games.service.mathplayopen.application.external.gamesexternalapi.ExternalGameService;
+import com.games.service.mathplayopen.application.external.feignclients.client.ExternalGameServiceFeignClient;
+import com.games.service.mathplayopen.application.external.feignclients.client.UserServiceFeignClient;
+import com.games.service.mathplayopen.application.external.feignclients.model.UserDto;
+import com.games.service.mathplayopen.domain.exceptions.FavoriteGameNotFoundException;
+import com.games.service.mathplayopen.domain.exceptions.GameNotFoundException;
+import com.games.service.mathplayopen.domain.model.commands.FavoriteGameCommand;
 import com.games.service.mathplayopen.domain.model.entities.FavoriteGame;
 import com.games.service.mathplayopen.domain.model.aggregates.Game;
-import com.games.service.mathplayopen.domain.model.commands.CreateGameCommand;
 import com.games.service.mathplayopen.domain.services.GameCommandService;
 import com.games.service.mathplayopen.infrastructure.persistance.jpa.repositories.FavoriteGameRepository;
 import com.games.service.mathplayopen.infrastructure.persistance.jpa.repositories.GameRepository;
+import com.games.service.mathplayopen.interfaces.rest.resources.GameResource;
+import com.games.service.mathplayopen.interfaces.rest.transform.GameResourceAssembler;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -17,54 +22,71 @@ import java.util.stream.Collectors;
 
 @Service
 public class GameCommandServiceImpl implements GameCommandService {
-    private final GameRepository gameRepository;
-    private final ExternalGameService externalGameService;
     private final FavoriteGameRepository favoriteGameRepository;
-    private final GameSystemFacade gameSystemFacade;
+    private final UserServiceFeignClient userServiceClientFeignClient;
+    private final ExternalGameServiceFeignClient externalGameServiceFeignClient;
+    private final GameResourceAssembler gameResourceAssembler;
+    private final GameRepository gameRepository;
 
-    public GameCommandServiceImpl(GameRepository gameRepository, ExternalGameService externalGameService, FavoriteGameRepository favoriteGameRepository, GameSystemFacade gameSystemFacade) {
+
+    public GameCommandServiceImpl(GameRepository gameRepository, ExternalGameServiceFeignClient externalGameServiceFeignClient, FavoriteGameRepository favoriteGameRepository, UserServiceFeignClient userServiceClientFeignClient, GameResourceAssembler gameResourceAssembler) {
         this.gameRepository = gameRepository;
-        this.externalGameService = externalGameService;
+        this.externalGameServiceFeignClient = externalGameServiceFeignClient;
         this.favoriteGameRepository = favoriteGameRepository;
-        this.gameSystemFacade = gameSystemFacade;
+        this.userServiceClientFeignClient = userServiceClientFeignClient;
+        this.gameResourceAssembler = gameResourceAssembler;
     }
 
     @Transactional
     @Override
-    public Game handle(CreateGameCommand command) {
-        Game game = new Game(
-                command.title(),
-                command.description(),
-                command.embedCode(),
-                command.imageUrl(),
-                command.rules(),
-                command.difficulty(),
-                command.topic()
-        );
-        return gameRepository.save(game);
+    public List<Game> fetchAndSaveExternalGames() {
+        List<GameResource> externalGames = externalGameServiceFeignClient.fetchGames();
+        List<Game> games = externalGames.stream()
+                .map(gameResourceAssembler::toEntity)
+                .collect(Collectors.toList());
+        return gameRepository.saveAll(games);
     }
 
     @Transactional
     @Override
-    public FavoriteGame markGameAsFavorite(Long gameId, Long studentId) {
-        Game game = gameRepository.findById(gameId)
-                .orElseThrow(() -> new RuntimeException("Game not found"));
+    public FavoriteGame markGameAsFavorite(FavoriteGameCommand command) {
+        //String token = userServiceClientFeignClient.getToken();
+        String token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJsdWlzaW5hZGUxMCIsImlhdCI6MTczMDUyNjE4MiwiZXhwIjoxNzMxMTMwOTgyfQ.VdgNOA0ryVZjepXd4DArMEr1KBxGE1veW9wXeFC2ZV3TbJxmFokvtVocpHztdHvM";
 
-        Optional<FavoriteGame> existingFavorite = favoriteGameRepository.findByGameIdAndStudentId(gameId, studentId);
+        /*
+        if (token == null || token.isEmpty()) {
+            throw new RuntimeException("No token found");
+        }
+         */
+
+        String authHeader = "Bearer " + token;
+        UserDto userDtoFromService  = userServiceClientFeignClient.getCurrentUser (authHeader);
+        if (userDtoFromService == null) {
+            throw new RuntimeException("User  not authenticated");
+        }
+
+        UserDto user = mapToGameServiceUserDto(userDtoFromService);
+        Game game = gameRepository.findById(command.gameId())
+                .orElseThrow(() -> new GameNotFoundException(command.gameId()));
+
+        Optional<FavoriteGame> existingFavorite = favoriteGameRepository.findByGameIdAndStudentId(command.gameId(), user.id());
         if (existingFavorite.isPresent()) {
             return existingFavorite.get();
         }
 
-        FavoriteGame favoriteGame = new FavoriteGame(game, studentId);
+        FavoriteGame favoriteGame = new FavoriteGame(game, user.id());
         return favoriteGameRepository.save(favoriteGame);
     }
 
     @Transactional
     @Override
-    public List<Game> fetchAndSaveExternalGames(){
-        List<Game> externalGames = gameSystemFacade.fetchExternalGames();
-        return externalGames.stream()
-                .map(gameRepository::save)
-                .collect(Collectors.toList());
+    public void removeGameFromFavorites(Long gameId, Long studentId) {
+        FavoriteGame favoriteGame = favoriteGameRepository.findByGameIdAndStudentId(gameId, studentId)
+                .orElseThrow(() -> new FavoriteGameNotFoundException(gameId, studentId));
+        favoriteGameRepository.delete(favoriteGame);
+    }
+
+    private UserDto mapToGameServiceUserDto(UserDto userDto) {
+        return new UserDto(userDto.id(), userDto.username());
     }
 }

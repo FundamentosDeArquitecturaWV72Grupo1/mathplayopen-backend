@@ -1,5 +1,6 @@
 package com.user.service.mathplayopen.domain.services;
 
+import com.user.service.mathplayopen.application.external.feignclient.model.UserDto;
 import com.user.service.mathplayopen.domain.model.aggregates.Student;
 import com.user.service.mathplayopen.domain.model.queries.GetAllStudentsByInstructorIdQuery;
 import com.user.service.mathplayopen.domain.model.queries.GetAllStudentsByInstitutionIdQuery;
@@ -14,4 +15,5 @@ public interface StudentQueryService {
     List<Student> handle(GetAllStudentsByInstructorIdQuery query);
     List<Student> handle(GetAllStudentsByInstitutionIdQuery query);
     List<Student> handle(GetAllStudentsQuery query);
+    UserDto getUserByToken(String token);
 }

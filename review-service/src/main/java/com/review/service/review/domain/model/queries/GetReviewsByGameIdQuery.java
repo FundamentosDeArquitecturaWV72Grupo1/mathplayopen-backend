@@ -1,4 +1,4 @@
 package com.review.service.review.domain.model.queries;
 
-public class GetAllReviewsQuery {
+public record GetReviewsByGameIdQuery(Long gameId) {
 }

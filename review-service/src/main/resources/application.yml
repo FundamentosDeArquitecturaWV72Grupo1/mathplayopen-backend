@@ -3,3 +3,11 @@ spring:
     name: review-service
   config:
     import: optional:configserver:http://localhost:8888
+
+game:
+  service:
+    url: http://localhost:9095
+
+user:
+  service:
+    url: http://localhost:8090

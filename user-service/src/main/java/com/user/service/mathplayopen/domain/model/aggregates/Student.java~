@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Data
 @Entity(name = "student")
+//@AllArgsConstructor
 @NoArgsConstructor
 public class Student extends AuditableAbstractAggregateRoot<Student> {
     @Column(name = "user_id", unique = true)
@@ -38,6 +39,7 @@ public class Student extends AuditableAbstractAggregateRoot<Student> {
         this.institutionId = institutionId;
         this.instructorId = null;
     }
+
 
     public void assignInstructor(Long instructorId) {
         this.instructorId = instructorId;
