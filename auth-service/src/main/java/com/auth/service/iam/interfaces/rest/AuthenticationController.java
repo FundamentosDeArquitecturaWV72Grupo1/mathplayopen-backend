@@ -33,7 +33,6 @@ public class AuthenticationController {
     private final BearerTokenService tokenService;
     private final UserQueryService userQueryService;
 
-
     public AuthenticationController(UserCommandService userCommandService, BearerTokenService tokenService, UserQueryService userQueryService) {
         this.userCommandService = userCommandService;
         this.tokenService = tokenService;
@@ -47,17 +46,13 @@ public class AuthenticationController {
      */
     @PostMapping("/sign-in")
     public ResponseEntity<AuthenticatedUserResource> signIn(@RequestBody SignInResource signInResource) {
-
         var signInCommand = SignInCommandFromResourceAssembler.toCommandFromResource(signInResource);
         var authenticatedUser = userCommandService.handle(signInCommand);
-
         if(authenticatedUser.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-
         var authenticateUserResource = AuthenticatedUserResourceFromEntityAssembler.toResourceFromEntity(authenticatedUser.get().getLeft(), authenticatedUser.get().getRight());
         return ResponseEntity.ok(authenticateUserResource);
-
     }
 
     /**
@@ -74,7 +69,7 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().build();
         }
 
-        var signInCommand = new SignInCommand(signUpResource.email(), signUpResource.password());
+        var signInCommand = new SignInCommand(signUpResource.username(), signUpResource.password());
         var authenticatedUser = userCommandService.handle(signInCommand);
 
         if (authenticatedUser.isEmpty()) {
@@ -89,6 +84,8 @@ public class AuthenticationController {
     @GetMapping("/me")
     public ResponseEntity<UserResource> getCurrentUser(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
+        System.out.println("Token by getCurrentUser AUTHSERVICE: " + token);
+
         String username = tokenService.getUsernameFromToken(token);
         var user = userQueryService.handle(new GetUserByUsernameQuery(username));
         if (user.isPresent()) {
@@ -96,24 +93,12 @@ public class AuthenticationController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
-
 
     @PostMapping("/validateToken")
-    public ResponseEntity<Boolean> validateToken(@RequestParam String token) {
+    public ResponseEntity<Boolean> validateToken(@RequestHeader("Authorization") String token) {
+        System.out.println("Token without blank spaces | AUTH SERVICE: " + token.trim());
         boolean isValid = tokenService.validateToken(token);
+        System.out.println("Token by validateToken | AUTH SERVICE: " + isValid);
         return ResponseEntity.ok(isValid);
     }
-
-    /*
-    @GetMapping("/me")
-    public ResponseEntity<UserResource> getCurrentUser (@RequestParam String token) {
-        String username = tokenService.getUsernameFromToken(token);
-        var user = userQueryService.handle(new GetUserByUsernameQuery(username));
-        if (user.isPresent()) {
-            return ResponseEntity.ok(UserResourceFromEntityAssembler.toResourceFromEntity(user.get()));
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
-     */
-
 }

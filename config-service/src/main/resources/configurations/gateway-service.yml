@@ -10,6 +10,32 @@ spring:
     name: gateway-service
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:4200"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "Origin"
+              - "Content-Type"
+              - "Accept"
+              - "Authorization"
+              - "Access-Control-Allow-Origin"
+              - "Access-Control-Allow-Credentials"
+            exposedHeaders:
+              - "Authorization"
+              - "Access-Control-Allow-Origin"
+              - "Access-Control-Allow-Credentials"
+            allowCredentials: true
+            maxAge: 3600
       discovery:
         locator:
           enabled: true
@@ -18,14 +44,10 @@ spring:
           uri: http://localhost:8090
           predicates:
             - Path=/api/v1/students/**
-          filters:
-            - AuthFilter
         - id: user-service-instructors
           uri: http://localhost:8090
           predicates:
             - Path=/api/v1/instructors/**
-          filters:
-            - AuthFilter
         - id: user-service-institutions
           uri: http://localhost:8090
           predicates:

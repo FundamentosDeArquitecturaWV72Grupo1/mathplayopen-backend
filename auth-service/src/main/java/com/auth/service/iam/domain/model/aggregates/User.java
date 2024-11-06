@@ -27,7 +27,6 @@ public class User extends AuditableAbstractAggregateRoot<User> {
     @NotBlank
     @Size(max = 50)
     @Column(unique = true)
-    @Email
     private String username;
 
     @NotBlank

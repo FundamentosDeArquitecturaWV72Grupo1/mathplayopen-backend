@@ -3,6 +3,7 @@ package com.metasoft.gatewayservice.config;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -29,6 +30,10 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
         return ((exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
 
+            if (request.getMethod().equals(HttpMethod.OPTIONS)) {
+                return chain.filter(exchange);
+            }
+
             if (request.getURI().getPath().startsWith("/api/v1/authentication")) {
                 return chain.filter(exchange);
             }
@@ -39,6 +44,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             }
 
             String token = authHeader.substring(7);
+            System.out.println("Token on Gateway Service: " + token);
             // Validar el token con AuthService
             return webClientBuilder.build()
                     .post()
@@ -63,37 +69,3 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
         return response.setComplete();
     }
 }
-
-    /*
-    @Override
-    public GatewayFilter apply(Config config) {
-        return ((exchange, chain) -> {
-            String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                return exchange.getResponse().setComplete();
-            }
-
-            String token = authHeader.substring(7);
-
-            return webClientBuilder.build()
-                    .post()
-                    .uri("http://auth-service/api/v1/authentication/validateToken")
-                    .header(HttpHeaders.AUTHORIZATION, authHeader)
-                    .retrieve()
-                    .bodyToMono(Boolean.class)
-                    .flatMap(isValid -> {
-                        if (Boolean.TRUE.equals(isValid)) {
-                            return chain.filter(exchange);
-                        } else {
-                            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                            return exchange.getResponse().setComplete();
-                        }
-                    })
-                    .onErrorResume(error -> {
-                        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                        return exchange.getResponse().setComplete();
-                    });
-        });
-    }*/
-

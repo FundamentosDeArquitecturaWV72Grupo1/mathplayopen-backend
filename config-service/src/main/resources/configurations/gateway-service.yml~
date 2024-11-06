@@ -10,6 +10,32 @@ spring:
     name: gateway-service
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:4200"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "Origin"
+              - "Content-Type"
+              - "Accept"
+              - "Authorization"
+              - "Access-Control-Allow-Origin"
+              - "Access-Control-Allow-Credentials"
+            exposedHeaders:
+              - "Authorization"
+              - "Access-Control-Allow-Origin"
+              - "Access-Control-Allow-Credentials"
+            allowCredentials: true
+            maxAge: 3600
       discovery:
         locator:
           enabled: true
@@ -34,7 +60,7 @@ spring:
           uri: http://localhost:9090
           predicates:
             - Path=/api/v1/reviews/**
-        - id: auth-service
+        - id: auth-service-authentication
           uri: http://localhost:8081
           predicates:
             - Path=/api/v1/authentication/**
