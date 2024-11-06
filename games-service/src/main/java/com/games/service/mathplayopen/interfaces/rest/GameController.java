@@ -51,6 +51,13 @@ public class GameController {
 
     @GetMapping("/all")
     public ResponseEntity<List<GameResource>> getAllGames() {
+        /*
+        try {
+            gameCommandService.fetchAndSaveExternalGames();
+        } catch (Exception e) {
+            System.err.println("Error when updating games from external API: " + e.getMessage());
+        }
+        */
         List<Game> games = gameQueryService.handle(new GetAllGamesQuery());
         List<GameResource> gameResources = games.stream()
                 .map(gameResourceAssembler::toResource)

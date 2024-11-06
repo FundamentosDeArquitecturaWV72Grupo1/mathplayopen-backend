@@ -5,6 +5,7 @@ import com.games.service.mathplayopen.domain.model.aggregates.Game;
 import com.games.service.mathplayopen.domain.model.queries.GetAllGamesQuery;
 import com.games.service.mathplayopen.domain.model.queries.GetFavoriteGamesByStudentIdQuery;
 import com.games.service.mathplayopen.domain.model.queries.GetGameByIdQuery;
+import com.games.service.mathplayopen.domain.model.queries.GetGameByTitleQuery;
 import com.games.service.mathplayopen.domain.services.GameQueryService;
 import com.games.service.mathplayopen.infrastructure.persistance.jpa.repositories.FavoriteGameRepository;
 import com.games.service.mathplayopen.infrastructure.persistance.jpa.repositories.GameRepository;
@@ -36,5 +37,10 @@ public class GameQueryServiceImpl implements GameQueryService {
     @Override
     public List<FavoriteGame> handle(GetFavoriteGamesByStudentIdQuery query) {
         return favoriteGameRepository.findByStudentId(query.studentId());
+    }
+
+    @Override
+    public Optional<Game> handle(GetGameByTitleQuery query) {
+        return gameRepository.findByTitle(query.title());
     }
 }

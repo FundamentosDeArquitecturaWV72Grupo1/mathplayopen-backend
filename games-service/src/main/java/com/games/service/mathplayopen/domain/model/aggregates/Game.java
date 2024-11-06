@@ -30,7 +30,7 @@ public class Game extends AuditableAbstractAggregateRoot<Game> {
     @Embedded
     private EmbedCode embedCode;
 
-    private String imageUrl;
+    private String image;
     private String rules;
     private String topic;
 
@@ -40,11 +40,11 @@ public class Game extends AuditableAbstractAggregateRoot<Game> {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GameScore> gameScores = new ArrayList<>();
 
-    public Game(Title title, Description description, EmbedCode embedCode, String imageUrl, String rules, String topic) {
+    public Game(Title title, Description description, EmbedCode embedCode, String image, String rules, String topic) {
         this.title = title;
         this.description = description;
         this.embedCode = embedCode;
-        this.imageUrl = imageUrl;
+        this.image = image;
         this.rules = rules;
         this.topic = topic;
     }

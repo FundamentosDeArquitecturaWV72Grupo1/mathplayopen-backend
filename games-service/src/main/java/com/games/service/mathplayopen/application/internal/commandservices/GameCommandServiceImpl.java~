@@ -8,7 +8,6 @@ import com.games.service.mathplayopen.domain.exceptions.GameNotFoundException;
 import com.games.service.mathplayopen.domain.model.commands.FavoriteGameCommand;
 import com.games.service.mathplayopen.domain.model.entities.FavoriteGame;
 import com.games.service.mathplayopen.domain.model.aggregates.Game;
-import com.games.service.mathplayopen.domain.model.valueobjects.Title;
 import com.games.service.mathplayopen.domain.services.GameCommandService;
 import com.games.service.mathplayopen.infrastructure.persistance.jpa.repositories.FavoriteGameRepository;
 import com.games.service.mathplayopen.infrastructure.persistance.jpa.repositories.GameRepository;
@@ -17,7 +16,6 @@ import com.games.service.mathplayopen.interfaces.rest.transform.GameResourceAsse
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,18 +40,8 @@ public class GameCommandServiceImpl implements GameCommandService {
     @Transactional
     @Override
     public List<Game> fetchAndSaveExternalGames() {
-        List<GameResource> externalGames = externalGameServiceFeignClient.fetchGames();
-        List<Game> games = new ArrayList<>();
 
-        for (GameResource resource : externalGames) {
-            Title title = new Title(resource.title());
-            if (gameRepository.findByTitle(title).isEmpty()) {
-                Game game = gameResourceAssembler.toEntity(resource);
-                games.add(game);
-            }
-        }
-        return gameRepository.saveAll(games);
-
+        
         /*
         List<GameResource> externalGames = externalGameServiceFeignClient.fetchGames();
         List<Game> games = externalGames.stream()

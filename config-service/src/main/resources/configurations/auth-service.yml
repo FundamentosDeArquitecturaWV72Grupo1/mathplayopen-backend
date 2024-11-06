@@ -11,7 +11,7 @@ spring:
     password: dB.B0e0y!Jex>JTR1u6GyFXg3
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true

@@ -68,3 +68,7 @@ spring:
           uri: http://localhost:8081
           predicates:
             - Path=/api/v1/users/**
+        - id: games-service
+          uri: http://localhost:9095
+          predicates:
+            - Path=/api/v1/games/**

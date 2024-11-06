@@ -51,10 +51,7 @@ public class StudentController {
     @PostMapping("/register")
     public ResponseEntity<StudentDto> createStudent(@RequestBody StudentDto studentDto, HttpServletRequest request) {
         log.info("Received registration request for student | USER SERVICE: {}", studentDto.email());
-        System.out.println("Student email | USER SERVICE: " + studentDto.email());
         String token = tokenExtractor.extractTokenFromRequest(request);
-        log.info("Extracted token: {}", token);
-        System.out.println("Token | USER SERVICE: " + token);
 
         UserDto userDto = authenticationClient.getCurrentUser(token);
         System.out.println("User: " + userDto);

@@ -5,7 +5,7 @@ public record GameResource(
         String title,
         String description,
         String embedCode,
-        String imageUrl,
+        String image,
         String rules,
         String topic
 ) {}

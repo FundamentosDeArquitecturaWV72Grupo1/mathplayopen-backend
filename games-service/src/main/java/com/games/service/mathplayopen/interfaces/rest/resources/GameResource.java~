@@ -1,4 +1,0 @@
-package com.games.service.mathplayopen.interfaces.rest.resources;
-
-public record GameResource() {
-}

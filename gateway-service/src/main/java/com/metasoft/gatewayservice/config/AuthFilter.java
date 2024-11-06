@@ -44,8 +44,6 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             }
 
             String token = authHeader.substring(7);
-            System.out.println("Token on Gateway Service: " + token);
-            // Validar el token con AuthService
             return webClientBuilder.build()
                     .post()
                     .uri("http://auth-service/api/v1/authentication/validateToken")

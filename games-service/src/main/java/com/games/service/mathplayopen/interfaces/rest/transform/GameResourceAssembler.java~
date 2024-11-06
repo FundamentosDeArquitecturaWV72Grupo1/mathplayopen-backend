@@ -26,7 +26,7 @@ public class GameResourceAssembler {
                 game.getTitle().title(),
                 game.getDescription().description(),
                 game.getEmbedCode().code(),
-                game.getImage(),
+                game.getImageUrl(),
                 game.getRules(),
                 game.getTopic()
         );

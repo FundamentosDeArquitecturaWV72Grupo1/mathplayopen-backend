@@ -84,7 +84,6 @@ public class AuthenticationController {
     @GetMapping("/me")
     public ResponseEntity<UserResource> getCurrentUser(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
-        System.out.println("Token by getCurrentUser AUTHSERVICE: " + token);
 
         String username = tokenService.getUsernameFromToken(token);
         var user = userQueryService.handle(new GetUserByUsernameQuery(username));
@@ -96,9 +95,7 @@ public class AuthenticationController {
 
     @PostMapping("/validateToken")
     public ResponseEntity<Boolean> validateToken(@RequestHeader("Authorization") String token) {
-        System.out.println("Token without blank spaces | AUTH SERVICE: " + token.trim());
         boolean isValid = tokenService.validateToken(token);
-        System.out.println("Token by validateToken | AUTH SERVICE: " + isValid);
         return ResponseEntity.ok(isValid);
     }
 }

@@ -1,4 +1,0 @@
-package com.games.service.mathplayopen.infrastructure.persistance.jpa.repositories;
-
-public interface GameRepository {
-}
