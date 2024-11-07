@@ -38,17 +38,14 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
         }
         GameDto mappedGame = mapToGameDto(game);
 
-        //String token = userServiceClientFeignClient.getToken();
-        String token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJsdWlzaW5hZGUxMCIsImlhdCI6MTczMDUyNjE4MiwiZXhwIjoxNzMxMTMwOTgyfQ.VdgNOA0ryVZjepXd4DArMEr1KBxGE1veW9wXeFC2ZV3TbJxmFokvtVocpHztdHvM";
-
-        String authHeader = "Bearer " + token;
-        UserDto userDtoFromService  = userServiceFeignClient.getCurrentUser (authHeader);
+        String authHeader = "Bearer " + command.token();
+        UserDto userDtoFromService  = userServiceFeignClient.getCurrentUser(authHeader);
         if (userDtoFromService == null) {
             throw new RuntimeException("User  not authenticated");
         }
         UserDto user = mapToGameServiceUserDto(userDtoFromService);
 
-        Review review = new Review(command, mappedGame.getId(), user.id());
+        Review review = new Review(command, mappedGame.getId(), user.id(), user.username());
         return Optional.of(reviewRepository.save(review));
     }
 

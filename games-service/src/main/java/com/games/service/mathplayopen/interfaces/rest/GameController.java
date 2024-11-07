@@ -74,16 +74,17 @@ public class GameController {
         return ResponseEntity.ok(gameResources);
     }
 
-    @GetMapping("/student/favorite-game/{gameId}")
-    public ResponseEntity<GameResource> markGameAsFavorite(@PathVariable Long gameId) {
-        FavoriteGame favoriteGame = gameCommandService.markGameAsFavorite(new FavoriteGameCommand(gameId));
+    @PostMapping("/student/favorite-game/{gameId}")
+    public ResponseEntity<GameResource> markGameAsFavorite(
+            @PathVariable Long gameId,
+            @RequestHeader("Authorization") String token) {
+        FavoriteGame favoriteGame = gameCommandService.markGameAsFavorite(new FavoriteGameCommand(gameId, token));
         return ResponseEntity.ok(gameResourceAssembler.toResource(favoriteGame.getGame()));
     }
 
-    @GetMapping("/student/favorites")
-    public ResponseEntity<List<GameResource>> getFavoriteGames(HttpServletRequest request) {
-        String token = tokenExtractor.extractTokenFromRequest(request);
-        UserDto user = userServiceFeignClient.getCurrentUser ("eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJsdWlzaW5hZGUxMCIsImlhdCI6MTczMDUyNjE4MiwiZXhwIjoxNzMxMTMwOTgyfQ.VdgNOA0ryVZjepXd4DArMEr1KBxGE1veW9wXeFC2ZV3TbJxmFokvtVocpHztdHvM");
+    @GetMapping("/student/favorite-game/all")
+    public ResponseEntity<List<GameResource>> getFavoriteGames(@RequestHeader("Authorization") String token) {
+        UserDto user = userServiceFeignClient.getCurrentUser(token);
         List<FavoriteGame> favoriteGames = gameQueryService.handle(new GetFavoriteGamesByStudentIdQuery(user.id()));
         List<GameResource> gameResources = favoriteGames.stream()
                 .map(favoriteGame -> gameResourceAssembler.toResource(favoriteGame.getGame()))
@@ -92,8 +93,9 @@ public class GameController {
     }
 
     @DeleteMapping("/student/favorite-game/{gameId}")
-    public ResponseEntity<Void> removeGameFromFavorites(@PathVariable Long gameId, HttpServletRequest request) {
-        String token = tokenExtractor.extractTokenFromRequest(request);
+    public ResponseEntity<Void> removeGameFromFavorites(
+            @PathVariable Long gameId,
+            @RequestHeader("Authorization") String token) {
         UserDto user = userServiceFeignClient.getCurrentUser(token);
         gameCommandService.removeGameFromFavorites(gameId, user.id());
         return ResponseEntity.noContent().build();

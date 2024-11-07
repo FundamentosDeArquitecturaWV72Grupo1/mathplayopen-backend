@@ -29,14 +29,11 @@ public class Review extends AuditableAbstractAggregateRoot<Review>{
     @Column(name = "user_id")
     private Long userId;
 
-    private String userName;
-
-    public Review(CreateReviewCommand command, Long gameId, Long userId, String userName) {
+    public Review(CreateReviewCommand command, Long gameId, Long userId) {
         this.description = command.description();
         this.score = command.score();
         this.gameId = gameId;
         this.userId = userId;
-        this.userName = userName;
     }
 
     public Review updateReview(String description, Integer score) {

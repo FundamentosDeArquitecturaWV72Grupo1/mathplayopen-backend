@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class GameCommandServiceImpl implements GameCommandService {
@@ -53,43 +52,27 @@ public class GameCommandServiceImpl implements GameCommandService {
             }
         }
         return gameRepository.saveAll(games);
-
-        /*
-        List<GameResource> externalGames = externalGameServiceFeignClient.fetchGames();
-        List<Game> games = externalGames.stream()
-                .map(gameResourceAssembler::toEntity)
-                .collect(Collectors.toList());
-        return gameRepository.saveAll(games);*/
     }
 
     @Transactional
     @Override
     public FavoriteGame markGameAsFavorite(FavoriteGameCommand command) {
-        //String token = userServiceClientFeignClient.getToken();
-        String token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJsdWlzaW5hZGUxMCIsImlhdCI6MTczMDUyNjE4MiwiZXhwIjoxNzMxMTMwOTgyfQ.VdgNOA0ryVZjepXd4DArMEr1KBxGE1veW9wXeFC2ZV3TbJxmFokvtVocpHztdHvM";
+        String authHeader = "Bearer " + command.token();
+        UserDto userDtoFromService = userServiceClientFeignClient.getCurrentUser(authHeader);
 
-        /*
-        if (token == null || token.isEmpty()) {
-            throw new RuntimeException("No token found");
-        }
-         */
-
-        String authHeader = "Bearer " + token;
-        UserDto userDtoFromService  = userServiceClientFeignClient.getCurrentUser (authHeader);
         if (userDtoFromService == null) {
-            throw new RuntimeException("User  not authenticated");
+            throw new RuntimeException("User not authenticated");
         }
 
-        UserDto user = mapToGameServiceUserDto(userDtoFromService);
         Game game = gameRepository.findById(command.gameId())
                 .orElseThrow(() -> new GameNotFoundException(command.gameId()));
 
-        Optional<FavoriteGame> existingFavorite = favoriteGameRepository.findByGameIdAndStudentId(command.gameId(), user.id());
+        Optional<FavoriteGame> existingFavorite = favoriteGameRepository.findByGameIdAndStudentId(command.gameId(), userDtoFromService.id());
         if (existingFavorite.isPresent()) {
             return existingFavorite.get();
         }
 
-        FavoriteGame favoriteGame = new FavoriteGame(game, user.id());
+        FavoriteGame favoriteGame = new FavoriteGame(game, userDtoFromService.id());
         return favoriteGameRepository.save(favoriteGame);
     }
 
