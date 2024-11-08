@@ -1,38 +1,23 @@
 package com.games.service.mathplayopen.domain.model.entities;
 
-import com.games.service.mathplayopen.domain.model.aggregates.Game;
+import com.games.service.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
-@Entity(name = "game_scores")
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameScore {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "game_id", nullable = false)
-    private Game game;
-
+@Entity(name = "game_scores")
+public class GameScore extends AuditableAbstractAggregateRoot<GameScore> {
     private Long studentId;
-    private Integer score;
-    private LocalDateTime playedAt;
-    private Long playTimeInSeconds;
+    private int score;
 
-    public GameScore(Game game, Long studentId, Integer score, Long playTimeInSeconds) {
-        this.game = game;
+    public GameScore(Long studentId) {
         this.studentId = studentId;
-        this.score = score;
-        this.playTimeInSeconds = playTimeInSeconds;
-        this.playedAt = LocalDateTime.now();
+        this.score = 0;
     }
 }

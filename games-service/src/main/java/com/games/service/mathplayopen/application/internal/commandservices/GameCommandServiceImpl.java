@@ -8,6 +8,7 @@ import com.games.service.mathplayopen.domain.exceptions.GameNotFoundException;
 import com.games.service.mathplayopen.domain.model.commands.FavoriteGameCommand;
 import com.games.service.mathplayopen.domain.model.entities.FavoriteGame;
 import com.games.service.mathplayopen.domain.model.aggregates.Game;
+import com.games.service.mathplayopen.domain.model.entities.GameScore;
 import com.games.service.mathplayopen.domain.model.valueobjects.Title;
 import com.games.service.mathplayopen.domain.services.GameCommandService;
 import com.games.service.mathplayopen.infrastructure.persistance.jpa.repositories.FavoriteGameRepository;
@@ -28,14 +29,16 @@ public class GameCommandServiceImpl implements GameCommandService {
     private final ExternalGameServiceFeignClient externalGameServiceFeignClient;
     private final GameResourceAssembler gameResourceAssembler;
     private final GameRepository gameRepository;
+    private final GameScoreServiceImpl gameScoreService;
 
 
-    public GameCommandServiceImpl(GameRepository gameRepository, ExternalGameServiceFeignClient externalGameServiceFeignClient, FavoriteGameRepository favoriteGameRepository, UserServiceFeignClient userServiceClientFeignClient, GameResourceAssembler gameResourceAssembler) {
+    public GameCommandServiceImpl(GameRepository gameRepository, ExternalGameServiceFeignClient externalGameServiceFeignClient, FavoriteGameRepository favoriteGameRepository, UserServiceFeignClient userServiceClientFeignClient, GameResourceAssembler gameResourceAssembler, GameScoreServiceImpl gameScoreService) {
         this.gameRepository = gameRepository;
         this.externalGameServiceFeignClient = externalGameServiceFeignClient;
         this.favoriteGameRepository = favoriteGameRepository;
         this.userServiceClientFeignClient = userServiceClientFeignClient;
         this.gameResourceAssembler = gameResourceAssembler;
+        this.gameScoreService = gameScoreService;
     }
 
     @Transactional
@@ -84,7 +87,14 @@ public class GameCommandServiceImpl implements GameCommandService {
         favoriteGameRepository.delete(favoriteGame);
     }
 
-    private UserDto mapToGameServiceUserDto(UserDto userDto) {
-        return new UserDto(userDto.id(), userDto.username());
+    @Transactional
+    @Override
+    public void updateStudentScore(Long studentId, int score) {
+        gameScoreService.updateScore(studentId, score);
+    }
+
+    @Override
+    public GameScore getStudentScore(Long studentId) {
+        return gameScoreService.getScoreByStudentId(studentId);
     }
 }

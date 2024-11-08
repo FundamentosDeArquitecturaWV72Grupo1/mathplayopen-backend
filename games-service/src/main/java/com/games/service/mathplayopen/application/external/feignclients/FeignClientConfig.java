@@ -12,8 +12,8 @@ public class FeignClientConfig {
         return new RequestInterceptor() {
             @Override
             public void apply(RequestTemplate template) {
-                String apiKeySimulator = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJwZWRyb0BnbWFpbC5jb20iLCJpYXQiOjE3MzA1MTg2MDgsImV4cCI6MTczMTEyMzQwOH0.VjmQHRqqzXlQqJp5AcImKLrq4cmql3OQxioY4G7hlQNAu9TBDIVU_c5HJBbqxRGD";
-                template.header("Authorization", "Bearer " + apiKeySimulator);
+                final String API_KEY_SIMULATOR = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJwZWRyb0BnbWFpbC5jb20iLCJpYXQiOjE3MzEwODA2NjMsImV4cCI6MTczMTY4NTQ2M30.uWIacI3NmuYHRtn7HGJw1rb0J8tL2qrKTUowog8GgvLC8zYuRngwt3OfGNFBKZTI";
+                template.header("Authorization", "Bearer " + API_KEY_SIMULATOR);
             }
         };
     }

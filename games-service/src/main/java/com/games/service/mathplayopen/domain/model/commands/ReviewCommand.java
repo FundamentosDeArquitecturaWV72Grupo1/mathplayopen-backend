@@ -1,5 +1,0 @@
-package com.games.service.mathplayopen.domain.model.commands;
-
-public record ReviewCommand(Long gameId, Long studentId, String description, double score) {
-}
-

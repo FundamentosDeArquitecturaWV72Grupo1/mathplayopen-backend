@@ -2,10 +2,7 @@ package com.games.service.mathplayopen.application.internal.queryservices;
 
 import com.games.service.mathplayopen.domain.model.entities.FavoriteGame;
 import com.games.service.mathplayopen.domain.model.aggregates.Game;
-import com.games.service.mathplayopen.domain.model.queries.GetAllGamesQuery;
-import com.games.service.mathplayopen.domain.model.queries.GetFavoriteGamesByStudentIdQuery;
-import com.games.service.mathplayopen.domain.model.queries.GetGameByIdQuery;
-import com.games.service.mathplayopen.domain.model.queries.GetGameByTitleQuery;
+import com.games.service.mathplayopen.domain.model.queries.*;
 import com.games.service.mathplayopen.domain.services.GameQueryService;
 import com.games.service.mathplayopen.infrastructure.persistance.jpa.repositories.FavoriteGameRepository;
 import com.games.service.mathplayopen.infrastructure.persistance.jpa.repositories.GameRepository;

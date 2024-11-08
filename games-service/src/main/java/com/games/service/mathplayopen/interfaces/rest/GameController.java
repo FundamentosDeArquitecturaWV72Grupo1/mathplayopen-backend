@@ -3,6 +3,7 @@ import com.games.service.mathplayopen.application.external.feignclients.TokenExt
 import com.games.service.mathplayopen.application.external.feignclients.client.UserServiceFeignClient;
 import com.games.service.mathplayopen.application.external.feignclients.model.UserDto;
 import com.games.service.mathplayopen.application.internal.commandservices.GameCommandServiceImpl;
+import com.games.service.mathplayopen.application.internal.commandservices.GameScoreServiceImpl;
 import com.games.service.mathplayopen.application.internal.queryservices.GameQueryServiceImpl;
 import com.games.service.mathplayopen.domain.model.aggregates.Game;
 import com.games.service.mathplayopen.domain.model.commands.FavoriteGameCommand;
@@ -13,9 +14,9 @@ import com.games.service.mathplayopen.domain.model.queries.GetGameByIdQuery;
 import com.games.service.mathplayopen.interfaces.rest.resources.GameResource;
 import com.games.service.mathplayopen.interfaces.rest.transform.GameResourceAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,8 @@ public class GameController {
     private final GameCommandServiceImpl gameCommandService;
     private final GameQueryServiceImpl gameQueryService;
     private final GameResourceAssembler gameResourceAssembler;
-    private final TokenExtractor tokenExtractor;
     private final UserServiceFeignClient userServiceFeignClient;
+    private final TokenExtractor tokenExtractor;
     private static final Logger log = LoggerFactory.getLogger(GameController.class);
 
     public GameController(GameCommandServiceImpl gameCommandService, GameQueryServiceImpl gameQueryService, GameResourceAssembler gameResourceAssembler, TokenExtractor tokenExtractor, UserServiceFeignClient userServiceFeignClient) {

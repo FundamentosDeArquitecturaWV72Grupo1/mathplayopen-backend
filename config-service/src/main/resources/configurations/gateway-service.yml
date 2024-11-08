@@ -21,6 +21,7 @@ spring:
               - GET
               - POST
               - PUT
+              - PATCH
               - DELETE
               - OPTIONS
             allowedHeaders:
@@ -72,3 +73,7 @@ spring:
           uri: http://localhost:9095
           predicates:
             - Path=/api/v1/games/**
+        - id: games-scores-service
+          uri: http://localhost:9095
+          predicates:
+            - Path=/api/v1/scores/**

@@ -2,10 +2,7 @@ package com.games.service.mathplayopen.domain.services;
 
 import com.games.service.mathplayopen.domain.model.entities.FavoriteGame;
 import com.games.service.mathplayopen.domain.model.aggregates.Game;
-import com.games.service.mathplayopen.domain.model.queries.GetAllGamesQuery;
-import com.games.service.mathplayopen.domain.model.queries.GetFavoriteGamesByStudentIdQuery;
-import com.games.service.mathplayopen.domain.model.queries.GetGameByIdQuery;
-import com.games.service.mathplayopen.domain.model.queries.GetGameByTitleQuery;
+import com.games.service.mathplayopen.domain.model.queries.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,4 +12,5 @@ public interface GameQueryService {
     List<Game> handle(GetAllGamesQuery query);
     List<FavoriteGame> handle(GetFavoriteGamesByStudentIdQuery query);
     Optional<Game> handle(GetGameByTitleQuery query);
+
 }
