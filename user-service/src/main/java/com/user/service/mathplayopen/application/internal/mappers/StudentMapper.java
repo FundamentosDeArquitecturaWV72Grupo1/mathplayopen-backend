@@ -17,6 +17,7 @@ public class StudentMapper {
 
     public static StudentDto toDto(Student student) {
         return new StudentDto(
+                student.getId(),
                 student.getName().firstName(),
                 student.getName().lastName(),
                 student.getEmail().email(),

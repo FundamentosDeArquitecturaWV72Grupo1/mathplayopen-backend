@@ -1,0 +1,7 @@
+package com.news.service.mathplayopen.domain.exceptions;
+
+public class NewsCouldNotBeCreated extends RuntimeException {
+  public NewsCouldNotBeCreated(String message) {
+    super(message);
+  }
+}

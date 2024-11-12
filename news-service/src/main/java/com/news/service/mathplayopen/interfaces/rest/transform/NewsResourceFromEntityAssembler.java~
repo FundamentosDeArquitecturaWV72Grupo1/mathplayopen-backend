@@ -1,0 +1,4 @@
+package com.news.service.mathplayopen.interfaces.rest.transform;
+
+public class NewsResourceFromEntityAssembler {
+}

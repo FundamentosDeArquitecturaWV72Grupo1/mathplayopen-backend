@@ -77,7 +77,3 @@ spring:
           uri: http://localhost:9095
           predicates:
             - Path=/api/v1/scores/**
-        - id: news-service
-          uri: http://localhost:8093
-          predicates:
-            - Path=/api/v1/news/**

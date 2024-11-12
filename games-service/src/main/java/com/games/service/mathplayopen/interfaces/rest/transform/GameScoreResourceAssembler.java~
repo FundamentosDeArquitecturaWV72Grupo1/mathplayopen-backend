@@ -1,4 +1,0 @@
-package com.games.service.mathplayopen.interfaces.rest.transform;
-
-public class GameScoreResourceAssembler {
-}

@@ -124,13 +124,7 @@ public class StudentController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<StudentDto>> getAllStudents(HttpServletRequest request) {
-        String token = tokenExtractor.extractTokenFromRequest(request);
-        UserDto userDto = authenticationClient.getCurrentUser(token);
-        if (userDto == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
+    public ResponseEntity<List<StudentDto>> getAllStudents() {
         List<Student> students = studentQueryService.handle(new GetAllStudentsQuery());
         List<StudentDto> studentDtos = students.stream().map(StudentMapper::toDto).collect(Collectors.toList());
         return ResponseEntity.ok(studentDtos);
